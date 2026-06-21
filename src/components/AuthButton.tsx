@@ -90,6 +90,16 @@ function PrivyAuthButton({ size }: Required<Props>) {
 
             {/* Actions */}
             <div className="p-1.5">
+              <a
+                href="/profile"
+                onClick={() => setOpen(false)}
+                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-[#eaedff] hover:bg-white/6 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg className="w-3.5 h-3.5 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Profile
+              </a>
               <button
                 onClick={() => { setOpen(false); logout(); }}
                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"

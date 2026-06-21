@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePrivy } from "@privy-io/react-auth";
-import { useWallets } from "@privy-io/react-auth/solana";
+import { useWallets, useFundWallet } from "@privy-io/react-auth/solana";
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 const SOL_MINT = "So11111111111111111111111111111111111111112";
@@ -88,13 +88,18 @@ export default function TradePanel({
   const [status, setStatus] = useState<SwapStatus>("idle");
   const [txSig, setTxSig] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [copied, setCopied] = useState(false);
 
-  const rpcUrl = process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL ?? "";
-  const rpcReady = rpcUrl && !rpcUrl.includes("YOUR_KEY");
+  const { fundWallet } = useFundWallet();
+
+  const _alchemy = process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL;
+  const rpcUrl = (_alchemy && !_alchemy.includes("YOUR_KEY"))
+    ? _alchemy
+    : "https://api.mainnet-beta.solana.com";
 
   // Fetch SOL + token balances whenever the wallet or token changes
   useEffect(() => {
-    if (!authenticated || !embeddedWallet?.address || !rpcReady) return;
+    if (!authenticated || !embeddedWallet?.address) return;
     const connection = new Connection(rpcUrl);
     const pubkey = new PublicKey(embeddedWallet.address);
 
@@ -113,7 +118,7 @@ export default function TradePanel({
     } else {
       setTokenBalance(null);
     }
-  }, [authenticated, embeddedWallet?.address, tokenAddress, rpcUrl, rpcReady]);
+  }, [authenticated, embeddedWallet?.address, tokenAddress, rpcUrl]);
 
   // Reset state whenever the token changes
   useEffect(() => {
@@ -220,16 +225,14 @@ export default function TradePanel({
       }
 
       // 5. Refresh balances
-      if (rpcReady) {
-        const connection = new Connection(rpcUrl);
-        const pubkey = new PublicKey(embeddedWallet.address);
-        connection.getBalance(pubkey).then((l) => setSolBalance(l / LAMPORTS_PER_SOL)).catch(() => {});
-        if (tokenAddress !== SOL_MINT) {
-          connection
-            .getParsedTokenAccountsByOwner(pubkey, { mint: new PublicKey(tokenAddress) })
-            .then((r) => setTokenBalance(r.value[0]?.account.data.parsed.info.tokenAmount.uiAmount ?? 0))
-            .catch(() => {});
-        }
+      const connection = new Connection(rpcUrl);
+      const pubkey = new PublicKey(embeddedWallet.address);
+      connection.getBalance(pubkey).then((l) => setSolBalance(l / LAMPORTS_PER_SOL)).catch(() => {});
+      if (tokenAddress !== SOL_MINT) {
+        connection
+          .getParsedTokenAccountsByOwner(pubkey, { mint: new PublicKey(tokenAddress) })
+          .then((r) => setTokenBalance(r.value[0]?.account.data.parsed.info.tokenAmount.uiAmount ?? 0))
+          .catch(() => {});
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Swap failed";
@@ -428,12 +431,50 @@ export default function TradePanel({
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-white/40">SOL balance</span>
-              <span className="text-white/60">
+              <span className={`${solBalance != null && solBalance < 0.005 ? "text-yellow-400" : "text-white/60"}`}>
                 {solBalance != null ? `${solBalance.toFixed(4)} SOL` : "—"}
               </span>
             </div>
           </div>
         </div>
+
+        {/* Wallet address + fund */}
+        {authenticated && embeddedWallet && (
+          <div className="border-t border-white/[0.07] pt-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Wallet</p>
+            {solBalance != null && solBalance < 0.005 && (
+              <div className="mb-2 bg-yellow-500/10 border border-yellow-500/20 rounded-lg px-3 py-2 text-xs text-yellow-400">
+                Low SOL balance — deposit SOL to pay for transactions
+              </div>
+            )}
+            <div className="bg-[#0e0c1e] rounded-lg border border-white/[0.07] overflow-hidden">
+              <div className="flex items-center gap-2 px-3 py-2">
+                <span className="text-[11px] text-white/40 font-mono truncate flex-1">
+                  {embeddedWallet.address}
+                </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(embeddedWallet.address);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 1500);
+                  }}
+                  className="shrink-0 text-[11px] text-white/40 hover:text-white/80 transition-colors cursor-pointer"
+                  title="Copy address"
+                >
+                  {copied ? "✓" : "Copy"}
+                </button>
+              </div>
+              <div className="border-t border-white/[0.07]">
+                <button
+                  onClick={() => fundWallet({ address: embeddedWallet.address })}
+                  className="w-full py-2 text-xs font-semibold text-[#606AF7] hover:bg-[#606AF7]/10 transition-colors cursor-pointer"
+                >
+                  + Fund with card / crypto
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Recent Trades */}
         {recentTrades.length > 0 && (
