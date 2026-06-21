@@ -37,7 +37,7 @@ export default function PriceChart({ address }: { address: string }) {
   const chartRef     = useRef<IChartApi | null>(null);
   const seriesRef    = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const volSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
-  const [timeframe, setTimeframe] = useState<Timeframe>("15m");
+  const [timeframe, setTimeframe] = useState<Timeframe>("1H");
   const [loading, setLoading]     = useState(true);
   const [hovered, setHovered]     = useState<HoveredCandle | null>(null);
   const [lastCandle, setLastCandle] = useState<HoveredCandle | null>(null);
@@ -136,10 +136,9 @@ export default function PriceChart({ address }: { address: string }) {
           .filter((d) => d.open && d.high && d.low && d.close)
           .sort((a, b) => (a.time as number) - (b.time as number));
 
-        if (seriesRef.current && candles.length > 0) {
+        if (seriesRef.current) {
           seriesRef.current.setData(candles);
 
-          // Volume bars — colour matches candle direction
           if (volSeriesRef.current) {
             volSeriesRef.current.setData(
               candles.map((d) => ({
@@ -152,9 +151,13 @@ export default function PriceChart({ address }: { address: string }) {
             );
           }
 
-          chartRef.current?.timeScale().fitContent();
-          const last = candles[candles.length - 1];
-          setLastCandle({ open: last.open, high: last.high, low: last.low, close: last.close });
+          if (candles.length > 0) {
+            chartRef.current?.timeScale().fitContent();
+            const last = candles[candles.length - 1];
+            setLastCandle({ open: last.open, high: last.high, low: last.low, close: last.close });
+          } else {
+            setLastCandle(null);
+          }
         }
       })
       .catch(() => {})
