@@ -32,11 +32,17 @@ function fmtPrice(n: number): string {
   return `$${n.toFixed(8)}`;
 }
 
+interface CandleRow {
+  time: UTCTimestamp;
+  open: number; high: number; low: number; close: number; vol: number;
+}
+
 export default function PriceChart({ address }: { address: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const chartRef     = useRef<IChartApi | null>(null);
-  const seriesRef    = useRef<ISeriesApi<"Candlestick"> | null>(null);
-  const volSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const chartRef      = useRef<IChartApi | null>(null);
+  const seriesRef     = useRef<ISeriesApi<"Candlestick"> | null>(null);
+  const volSeriesRef  = useRef<ISeriesApi<"Histogram"> | null>(null);
+  const candlesRef    = useRef<CandleRow[]>([]);   // last fetched candles
   const [timeframe, setTimeframe] = useState<Timeframe>("1H");
   const [loading, setLoading]     = useState(true);
   const [hovered, setHovered]     = useState<HoveredCandle | null>(null);
@@ -112,7 +118,18 @@ export default function PriceChart({ address }: { address: string }) {
       const width = el.clientWidth || el.offsetWidth;
       if (width > 0) {
         chart.applyOptions({ width });
-        chartRef.current?.timeScale().fitContent();
+        // Re-apply stored candles in case setData was called before chart had width
+        if (candlesRef.current.length > 0 && seriesRef.current) {
+          seriesRef.current.setData(candlesRef.current);
+          volSeriesRef.current?.setData(
+            candlesRef.current.map((d) => ({
+              time:  d.time,
+              value: d.vol,
+              color: d.close >= d.open ? "rgba(34,197,94,0.35)" : "rgba(239,68,68,0.35)",
+            }))
+          );
+          chart.timeScale().fitContent();
+        }
       }
     });
     ro.observe(el);
@@ -128,6 +145,7 @@ export default function PriceChart({ address }: { address: string }) {
 
   const fetchData = useCallback(() => {
     if (!seriesRef.current) return;
+    candlesRef.current = [];
     setLoading(true);
     fetch(`/api/tokens/${address}/ohlcv?type=${timeframe}`)
       .then((r) => r.json())
@@ -150,6 +168,8 @@ export default function PriceChart({ address }: { address: string }) {
           }))
           .filter((d) => d.open && d.high && d.low && d.close)
           .sort((a, b) => (a.time as number) - (b.time as number));
+
+        candlesRef.current = candles;
 
         if (seriesRef.current) {
           seriesRef.current.setData(candles);
