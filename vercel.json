@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "functions": {
+    "src/app/api/swap/**": { "maxDuration": 30 },
+    "src/app/api/tokens/**": { "maxDuration": 15 }
+  }
+}
