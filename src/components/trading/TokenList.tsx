@@ -59,7 +59,7 @@ function SkeletonRow() {
   );
 }
 
-export default function TokenList({ address }: { address: string }) {
+export default function TokenList({ address, horizontal = false }: { address: string; horizontal?: boolean }) {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [loading, setLoading] = useState(true);
   const [watchlist, setWatchlist] = useState<Set<string>>(new Set());
@@ -123,6 +123,44 @@ export default function TokenList({ address }: { address: string }) {
     const id = setInterval(fetchTokens, 30_000);
     return () => clearInterval(id);
   }, [fetchTokens]);
+
+  // Horizontal strip for mobile
+  if (horizontal) {
+    return (
+      <div className="flex overflow-x-auto gap-2 px-3 py-2.5 scrollbar-none">
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="shrink-0 w-20 h-14 rounded-xl bg-white/5 animate-pulse" />
+            ))
+          : tokens.map((token) => {
+              const isActive = token.address === address;
+              const positive = token.change24h >= 0;
+              return (
+                <button
+                  key={token.address}
+                  onClick={() => router.push(`/trade/${token.address}`)}
+                  className={`shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-xl border transition-colors cursor-pointer ${
+                    isActive
+                      ? "bg-[#606AF7]/15 border-[#606AF7]/40"
+                      : "bg-white/[0.03] border-white/[0.07] hover:bg-white/[0.06]"
+                  }`}
+                >
+                  <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 flex items-center justify-center bg-[#1a1830]">
+                    {token.logoURI
+                      ? <img src={token.logoURI} alt={token.symbol} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                      : <span className="text-[10px] font-bold text-[#9ba3d4]">{token.symbol?.[0] ?? "?"}</span>
+                    }
+                  </div>
+                  <span className="text-[10px] font-bold text-[#eaedff]">{token.symbol}</span>
+                  <span className={`text-[9px] font-semibold ${positive ? "text-green-400" : "text-red-400"}`}>
+                    {positive ? "+" : ""}{token.change24h.toFixed(1)}%
+                  </span>
+                </button>
+              );
+            })}
+      </div>
+    );
+  }
 
   return (
     <>

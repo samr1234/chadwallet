@@ -99,20 +99,9 @@ export default function Home() {
             </p>
           </div>
 
-          {/* CTAs — mobile */}
-          <div className="flex gap-2 md:hidden">
-            <Link
-              href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
-              target="_blank" rel="noopener noreferrer"
-              className="text-center z-2 bg-white/12 backdrop-blur-md border border-white/10 rounded-xl text-base font-bold w-44 py-3"
-            >
-              Download app
-            </Link>
-          </div>
-
-          {/* CTAs — desktop */}
-          <div className="hidden md:flex gap-3">
-            <StartTradingButton className="group items-center justify-center overflow-hidden bg-[#606AF780] hover:bg-[#606AF7CC] backdrop-blur-md transition-colors duration-150 py-3 w-48 rounded-xl text-base font-bold border border-white/10 z-2 hidden md:flex">
+          {/* CTAs — all screens */}
+          <div className="flex gap-3">
+            <StartTradingButton className="group flex items-center justify-center overflow-hidden bg-[#606AF780] hover:bg-[#606AF7CC] backdrop-blur-md transition-colors duration-150 py-3 w-44 md:w-48 rounded-xl text-base font-bold border border-white/10 z-2">
               <span>Start trading</span>
               <div className="flex items-center overflow-hidden w-0 opacity-0 group-hover:w-6 group-hover:opacity-100 transition-all duration-150 ease-out">
                 <span className="ml-2 text-sm">→</span>
@@ -121,7 +110,7 @@ export default function Home() {
             <Link
               href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
               target="_blank" rel="noopener noreferrer"
-              className="cursor-pointer z-2 group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors duration-150 border border-white/10 rounded-xl text-base font-bold w-48 flex items-center justify-center overflow-hidden"
+              className="cursor-pointer z-2 group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors duration-150 border border-white/10 rounded-xl text-base font-bold w-44 md:w-48 flex items-center justify-center overflow-hidden"
             >
               <div className="flex items-center overflow-hidden w-0 opacity-0 group-hover:w-6 group-hover:opacity-100 transition-all duration-150 ease-out">
                 <span className="mr-2 text-sm">↓</span>
