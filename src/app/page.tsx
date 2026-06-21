@@ -102,7 +102,7 @@ export default function Home() {
           {/* CTAs — mobile */}
           <div className="flex gap-2 md:hidden">
             <Link
-              href="https://apps.apple.com/us/app/chadwallet/id6757367474"
+              href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
               target="_blank" rel="noopener noreferrer"
               className="text-center z-2 bg-white/12 backdrop-blur-md border border-white/10 rounded-xl text-base font-bold w-44 py-3"
             >
@@ -118,12 +118,16 @@ export default function Home() {
                 <span className="ml-2 text-sm">→</span>
               </div>
             </StartTradingButton>
-            <button className="cursor-pointer z-2 group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors duration-150 border border-white/10 rounded-xl text-base font-bold w-48 flex items-center justify-center overflow-hidden">
+            <Link
+              href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
+              target="_blank" rel="noopener noreferrer"
+              className="cursor-pointer z-2 group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors duration-150 border border-white/10 rounded-xl text-base font-bold w-48 flex items-center justify-center overflow-hidden"
+            >
               <div className="flex items-center overflow-hidden w-0 opacity-0 group-hover:w-6 group-hover:opacity-100 transition-all duration-150 ease-out">
                 <span className="mr-2 text-sm">↓</span>
               </div>
               <span>Download app</span>
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -345,7 +349,7 @@ function SocialProof() {
         <div className="pt-4 flex gap-3">
           {/* Mobile */}
           <Link
-            href="https://apps.apple.com/us/app/chadwallet/id6757367474"
+            href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
             target="_blank" rel="noopener noreferrer"
             className="md:hidden text-center bg-white/12 backdrop-blur-md border border-white/10 rounded-xl text-base font-bold w-44 py-3"
           >
@@ -356,10 +360,14 @@ function SocialProof() {
             <span>Start trading</span>
             <span className="w-0 overflow-hidden opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-150">→</span>
           </StartTradingButton>
-          <button className="cursor-pointer hidden md:flex group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors border border-white/10 rounded-xl text-base font-bold w-48 items-center justify-center gap-1 overflow-hidden">
+          <Link
+            href="https://play.google.com/store/apps/details?id=xyz.chadwallet.www"
+            target="_blank" rel="noopener noreferrer"
+            className="cursor-pointer hidden md:flex group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors border border-white/10 rounded-xl text-base font-bold w-48 items-center justify-center gap-1 overflow-hidden"
+          >
             <span className="w-0 overflow-hidden opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-150">↓</span>
             <span>Download app</span>
-          </button>
+          </Link>
         </div>
       </div>
     </div>
