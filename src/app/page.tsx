@@ -242,10 +242,10 @@ export default function Home() {
           </div>
         </footer>
 
-      </main>
+        {/* ── Bottom ticker ───────────────────────────────────────────────── */}
+        <TokenTicker direction="right" speed={45} />
 
-      {/* ── Bottom ticker ───────────────────────────────────────────────── */}
-      <TokenTicker direction="right" speed={80} />
+      </main>
 
     </div>
   );

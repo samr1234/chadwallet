@@ -13,18 +13,18 @@ export interface TickerToken {
 }
 
 const MOCK_TOKENS: TickerToken[] = [
-  // { address: "So11111111111111111111111111111111111111112",  symbol: "SOL",   name: "Solana",         price: 168.42,     change24h:  3.21 },
-  // { address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", symbol: "BONK", name: "Bonk",          price: 0.00002341, change24h: -2.10 },
-  // { address: "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", symbol: "WIF",  name: "dogwifhat",     price: 2.87,       change24h:  7.45 },
-  // { address: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",  symbol: "JUP",  name: "Jupiter",       price: 0.9134,     change24h:  1.83 },
-  // { address: "jtojtomepa8bduh8dcxvnwbs7gbhxopozarlhxy4pwa",  symbol: "JTO",  name: "Jito",          price: 3.41,       change24h: -0.72 },
-  // { address: "HZ1JovNiVvGqDMcGqMRggra1k99Q6MkXWzG5T5aMFmXk", symbol: "PYTH", name: "Pyth Network",  price: 0.2871,     change24h:  5.14 },
-  // { address: "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs", symbol: "WEN",  name: "Wen",           price: 0.00008234, change24h: 12.30 },
-  // { address: "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof",  symbol: "RNDR", name: "Render",        price: 7.23,       change24h:  2.94 },
-  // { address: "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",  symbol: "ORCA", name: "Orca",          price: 3.51,       change24h: -1.20 },
-  // { address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",  symbol: "USDC", name: "USD Coin",      price: 1.0001,     change24h:  0.01 },
-  // { address: "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So",  symbol: "mSOL", name: "Marinade SOL",  price: 185.20,     change24h:  3.10 },
-  // { address: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R", symbol: "RAY",  name: "Raydium",       price: 2.14,       change24h: -1.80 },
+  { address: "So11111111111111111111111111111111111111112",  symbol: "SOL",   name: "Solana",         price: 168.42,     change24h:  3.21 },
+  { address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", symbol: "BONK", name: "Bonk",          price: 0.00002341, change24h: -2.10 },
+  { address: "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", symbol: "WIF",  name: "dogwifhat",     price: 2.87,       change24h:  7.45 },
+  { address: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",  symbol: "JUP",  name: "Jupiter",       price: 0.9134,     change24h:  1.83 },
+  { address: "jtojtomepa8bduh8dcxvnwbs7gbhxopozarlhxy4pwa",  symbol: "JTO",  name: "Jito",          price: 3.41,       change24h: -0.72 },
+  { address: "HZ1JovNiVvGqDMcGqMRggra1k99Q6MkXWzG5T5aMFmXk", symbol: "PYTH", name: "Pyth Network",  price: 0.2871,     change24h:  5.14 },
+  { address: "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs", symbol: "WEN",  name: "Wen",           price: 0.00008234, change24h: 12.30 },
+  { address: "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof",  symbol: "RNDR", name: "Render",        price: 7.23,       change24h:  2.94 },
+  { address: "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",  symbol: "ORCA", name: "Orca",          price: 3.51,       change24h: -1.20 },
+  { address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",  symbol: "USDC", name: "USD Coin",      price: 1.0001,     change24h:  0.01 },
+  { address: "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So",  symbol: "mSOL", name: "Marinade SOL",  price: 185.20,     change24h:  3.10 },
+  { address: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R", symbol: "RAY",  name: "Raydium",       price: 2.14,       change24h: -1.80 },
 ];
 
 function formatPrice(price: number): string {

@@ -57,10 +57,23 @@ body {
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
-.animate-ticker { animation: ticker-left 40s linear infinite; }
-.animate-ticker-reverse { animation: ticker-right 40s linear infinite; }
-.animate-ticker:hover,
-.animate-ticker-reverse:hover { animation-play-state: paused; }
+.animate-ticker {
+  animation-name: ticker-left;
+  animation-duration: 40s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.animate-ticker-reverse {
+  animation-name: ticker-right;
+  animation-duration: 40s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+/* Pause on hover — desktop only, touch devices should keep scrolling */
+@media (hover: hover) {
+  .animate-ticker:hover,
+  .animate-ticker-reverse:hover { animation-play-state: paused; }
+}
 
 /* Float */
 @keyframes float {

@@ -56,7 +56,7 @@ export default function PriceChart({ address }: { address: string }) {
         vertLines: { color: "rgba(255,255,255,0.03)" },
         horzLines: { color: "rgba(255,255,255,0.03)" },
       },
-      autoSize: true,
+      width:  el.clientWidth || el.offsetWidth || 300,
       height: 380,
       timeScale: {
         timeVisible:    true,
@@ -108,7 +108,17 @@ export default function PriceChart({ address }: { address: string }) {
       if (bar) setHovered(bar);
     });
 
+    const ro = new ResizeObserver(() => {
+      const width = el.clientWidth || el.offsetWidth;
+      if (width > 0) {
+        chart.applyOptions({ width });
+        chartRef.current?.timeScale().fitContent();
+      }
+    });
+    ro.observe(el);
+
     return () => {
+      ro.disconnect();
       chart.remove();
       chartRef.current    = null;
       seriesRef.current   = null;
