@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
-import { Search } from "lucide-react";
 import AuthButton from "@/components/AuthButton";
 import TokenList from "@/components/trading/TokenList";
 import PriceChart from "@/components/trading/PriceChart";
@@ -121,15 +120,6 @@ export default function TradingLayout({ address }: { address: string }) {
           <div className="w-7 h-7 rounded-lg bg-[#606AF7] flex items-center justify-center text-xs font-black">C</div>
           <span className="font-bold text-sm hidden sm:block">ChadWallet</span>
         </a>
-
-        <div className="flex-1 max-w-sm relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Search tokens or paste address…"
-            className="w-full bg-[#0e0c1e] border border-white/[0.07] rounded-lg pl-9 pr-3 h-9 text-sm text-[#eaedff] placeholder:text-white/25 focus:outline-none focus:border-[#606AF7]/50 transition-colors"
-          />
-        </div>
 
         <div className="ml-auto">
           <AuthButton size="sm" />
