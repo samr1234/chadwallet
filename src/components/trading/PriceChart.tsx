@@ -124,6 +124,11 @@ export default function PriceChart({ address }: { address: string }) {
       .then((data) => {
         const items: OHLCVItem[] = data.items ?? [];
 
+        // Update active button to whichever timeframe the server resolved to
+        if (data.resolvedType && data.resolvedType !== timeframe) {
+          setTimeframe(data.resolvedType as Timeframe);
+        }
+
         const candles = items
           .map((d) => ({
             time:  d.unixTime as UTCTimestamp,
