@@ -59,7 +59,7 @@ export async function GET() {
     const tokens = await inFlight;
     return NextResponse.json({ tokens });
   } catch (err) {
-    console.error("BirdEye fetch failed:", err);
+
     return NextResponse.json({ error: "Failed to fetch tokens" }, { status: 502 });
   }
 }

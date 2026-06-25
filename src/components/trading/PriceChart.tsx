@@ -199,7 +199,9 @@ export default function PriceChart({ address }: { address: string }) {
       .finally(() => setLoading(false));
   }, [address, timeframe]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const display   = hovered ?? lastCandle;
   const change    = display ? display.close - display.open : 0;
@@ -209,7 +211,7 @@ export default function PriceChart({ address }: { address: string }) {
   return (
     <div className="relative bg-[#080617]">
       {/* Toolbar */}
-      <div className="flex items-center gap-1 px-4 pt-3 pb-2 flex-wrap border-b border-white/[0.04]">
+      <div className="flex items-center gap-1 px-4 pt-3 pb-2 flex-wrap border-b border-white/4">
         <div className="flex gap-0.5">
           {TIMEFRAMES.map((tf) => (
             <button

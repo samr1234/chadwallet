@@ -78,13 +78,19 @@ export default function TradingLayout({ address }: { address: string }) {
   }, [authenticated, user]);
 
   useEffect(() => {
+    // Don't clear tokenData — keep old token visible until new one loads to avoid flicker
     setLoading(true);
-    setTokenData(null);
-    fetch(`/api/tokens/${address}/overview`)
-      .then((r) => r.json())
-      .then((data) => { if (!data.error) setTokenData(data); })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+
+    const load = () =>
+      fetch(`/api/tokens/${address}/overview`)
+        .then((r) => r.json())
+        .then((data) => { if (!data.error) setTokenData(data); })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+
+    load();
+    const id = setInterval(load, 30_000);
+    return () => clearInterval(id);
   }, [address]);
 
   const change = tokenData?.priceChange24hPercent ?? 0;

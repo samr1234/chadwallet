@@ -45,7 +45,6 @@ export async function GET(
 
     return NextResponse.json({ items });
   } catch (err) {
-    console.error("Holders fetch failed:", err);
     return NextResponse.json({ items: [] });
   }
 }

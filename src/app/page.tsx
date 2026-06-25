@@ -5,9 +5,9 @@ import AuthButton from "@/components/AuthButton";
 import StartTradingButton from "@/components/StartTradingButton";
 
 const features = [
-  { tag: "LEADERBOARD", title: "become a chad, top the leaderboard",               img: "/images/card-leaderboard.webp", imgFit: "contain" as const },
-  { tag: "LIVE TRADES", title: "discover and follow top traders",                  img: "/images/card-social.webp",      imgFit: "contain" as const },
-  { tag: "ALERTS",      title: "real time alerts for what top wallets are buying", img: "/images/card-alerts.webp",      imgFit: "cover" as const   },
+  { tag: "DEPOSITS",    title: "Secure deposits & instant withdrawals",   img: "/images/feat-deposit.png" },
+  { tag: "LIVE TRADES", title: "Take the guesswork out of trading",       img: "/images/feat-trades.png"  },
+  { tag: "TOP TRADERS", title: "Meet top traders who win consistently",   img: "/images/feat-traders.png" },
 ];
 
 export default function Home() {
@@ -120,24 +120,24 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Astronaut — mobile */}
+        {/* Hero mockup — mobile */}
         <Image
-          src="/images/astronaut.webp"
-          alt="ChadWallet Astronaut"
-          width={520}
-          height={520}
-          priority
-          className="md:hidden animate-float -mt-10 w-[90vw] max-w-sm object-contain select-none"
-        />
-
-        {/* Astronaut — desktop */}
-        <Image
-          src="/images/astronaut.webp"
-          alt="ChadWallet Astronaut"
-          width={600}
+          src="/images/hero-mockup.png"
+          alt="ChadWallet App"
+          width={800}
           height={600}
           priority
-          className="hidden md:block h-[520px] -mt-16 object-contain animate-float select-none"
+          className="md:hidden -mt-4 w-[95vw] object-contain select-none animate-float"
+        />
+
+        {/* Hero mockup — desktop */}
+        <Image
+          src="/images/hero-mockup.png"
+          alt="ChadWallet App"
+          width={1000}
+          height={750}
+          priority
+          className="hidden md:block w-[60vw] max-w-4xl -mt-8 object-contain select-none animate-float"
         />
 
         {/* ── "Trade from anywhere" — desktop ────────────────────────── */}
@@ -151,22 +151,24 @@ export default function Home() {
           <p className="text-[rgba(209,216,255,0.6)] text-[20px] tracking-tight text-center">
             Open a trade on your phone, close it on your desktop — all in one app.
           </p>
-          <div className="relative -mt-12">
+          <div className="flex items-end gap-8 mt-4">
             <Image
-              src="/images/app-desktop.webp"
-              alt="ChadWallet desktop app"
-              width={1200}
-              height={750}
+              src="/images/feat-portfolio.png"
+              alt="ChadWallet portfolio"
+              width={300}
+              height={600}
               loading="lazy"
-              className="w-[64vw]"
+              className="w-[16vw] object-contain rounded-2xl animate-float"
+              style={{ animationDelay: "0s" }}
             />
             <Image
-              src="/images/app-phone.webp"
-              alt="ChadWallet mobile app"
-              width={600}
-              height={1200}
+              src="/images/feat-chart.png"
+              alt="ChadWallet chart"
+              width={300}
+              height={600}
               loading="lazy"
-              className="w-[28vw] absolute -right-24 bottom-28 animate-float"
+              className="w-[16vw] object-contain rounded-2xl animate-float"
+              style={{ animationDelay: "0.8s" }}
             />
           </div>
         </div>
@@ -174,7 +176,7 @@ export default function Home() {
         {/* ── "Trade from anywhere" — mobile ─────────────────────────── */}
         <div className="flex md:hidden relative text-center">
           <Image
-            src="/images/app-mobile.webp"
+            src="/images/feat-chart.png"
             alt="ChadWallet mobile app"
             width={600}
             height={900}
@@ -364,21 +366,19 @@ function SocialProof() {
   );
 }
 
-function FeatureCard({ tag, title, img, imgFit }: { tag: string; title: string; img: string; imgFit: "contain" | "cover" }) {
+function FeatureCard({ tag, title, img }: { tag: string; title: string; img: string }) {
   return (
-    <div className="group flex-1 min-w-0 shrink pt-8 pb-0 rounded-[25px] flex flex-col overflow-hidden gap-2 border border-white/[0.07] hover:border-white/[0.14] transition-colors duration-300 bg-[#0e0c1e] aspect-square">
+    <div className="flex-1 min-w-0 shrink pt-8 pb-0 rounded-[25px] flex flex-col overflow-hidden gap-5 border border-white/[0.07] hover:border-white/[0.14] transition-colors duration-300 bg-[#0e0c1e] aspect-square">
       <div className="font-mono text-[#606AF7] px-8 font-bold text-xs tracking-widest">{tag}</div>
       <h3 className="text-[24px] md:text-[32px] leading-8 tracking-tight px-8">{title}</h3>
-      <div className="min-h-0 flex-1">
+      <div className="min-h-0 flex-1 flex justify-center items-end px-8">
         <Image
           src={img}
           alt={title}
           width={600}
           height={600}
           loading="lazy"
-          className={`w-full h-full transition-transform duration-300 group-hover:scale-105 ${
-            imgFit === "cover" ? "object-cover" : "object-contain object-bottom"
-          }`}
+          className="w-[80%] h-full object-contain object-bottom"
         />
       </div>
     </div>

@@ -238,7 +238,6 @@ export default function TradePanel({
       }
     } catch (err) {
       let msg = err instanceof Error ? err.message : String(err);
-      console.error("[swap]", msg);
       // Translate common opaque errors into plain English
       if (msg.includes("0x1771") || msg.toLowerCase().includes("slippage")) {
         msg = "Slippage tolerance exceeded — try increasing slippage (gear icon)";

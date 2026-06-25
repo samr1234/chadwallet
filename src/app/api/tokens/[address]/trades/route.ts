@@ -59,8 +59,7 @@ export async function GET(
         const data = await res.json();
         return NextResponse.json({ items: data.data?.items ?? [] });
       }
-      const errBody = await res.json().catch(() => ({}));
-      console.error("BirdEye trades error:", res.status, errBody);
+      await res.json().catch(() => {});
     } catch {
       // fall through
     }
