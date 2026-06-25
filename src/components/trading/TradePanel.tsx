@@ -80,6 +80,8 @@ export default function TradePanel({
 
   const [side, setSide] = useState<Side>("buy");
   const [amount, setAmount] = useState("");
+  const [slippageBps, setSlippageBps] = useState(100); // 1% default
+  const [showSlippage, setShowSlippage] = useState(false);
   const [recentTrades, setRecentTrades] = useState<RecentTrade[]>([]);
   const [solBalance, setSolBalance] = useState<number | null>(null);
   const [tokenBalance, setTokenBalance] = useState<number | null>(null);
@@ -152,7 +154,7 @@ export default function TradePanel({
     const timer = setTimeout(async () => {
       try {
         const res = await fetch(
-          `/api/swap/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${atomicAmount}&slippageBps=50`
+          `/api/swap/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${atomicAmount}&slippageBps=${slippageBps}`
         );
         const data = await res.json();
         if (data.error) throw new Error(data.error);
@@ -165,7 +167,7 @@ export default function TradePanel({
     }, 500);
 
     return () => { clearTimeout(timer); setQuoteLoading(false); };
-  }, [amount, side, tokenAddress, tokenDecimals]);
+  }, [amount, side, tokenAddress, tokenDecimals, slippageBps]);
 
   const estimatedOut = quote
     ? side === "buy"
@@ -235,8 +237,19 @@ export default function TradePanel({
           .catch(() => {});
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Swap failed";
-      setErrMsg(msg.length > 100 ? msg.slice(0, 100) + "…" : msg);
+      let msg = err instanceof Error ? err.message : String(err);
+      console.error("[swap]", msg);
+      // Translate common opaque errors into plain English
+      if (msg.includes("0x1771") || msg.toLowerCase().includes("slippage")) {
+        msg = "Slippage tolerance exceeded — try increasing slippage (gear icon)";
+      } else if (msg.toLowerCase().includes("insufficient lamports") || msg.toLowerCase().includes("insufficient funds")) {
+        msg = "Not enough SOL — deposit SOL to your wallet first";
+      } else if (msg.toLowerCase().includes("blockhash not found") || msg.toLowerCase().includes("expired")) {
+        msg = "Transaction expired — please try again";
+      } else if (msg.toLowerCase().includes("user rejected") || msg.toLowerCase().includes("cancelled")) {
+        msg = "Transaction cancelled";
+      }
+      setErrMsg(msg);
       setStatus("error");
     }
   }
@@ -254,8 +267,41 @@ export default function TradePanel({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="shrink-0 px-4 py-3 border-b border-white/[0.07]">
+      <div className="shrink-0 px-4 py-3 border-b border-white/[0.07] flex items-center justify-between">
         <p className="text-xs font-bold uppercase tracking-wider text-white/50">Trade</p>
+        <div className="relative">
+          <button
+            onClick={() => setShowSlippage((v) => !v)}
+            className="flex items-center gap-1.5 text-[11px] text-white/40 hover:text-white/70 transition-colors cursor-pointer"
+            title="Slippage tolerance"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            {(slippageBps / 100).toFixed(1)}%
+          </button>
+          {showSlippage && (
+            <div className="absolute right-0 top-6 z-20 bg-[#0e0c1e] border border-white/[0.07] rounded-xl p-3 shadow-xl w-44">
+              <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Slippage tolerance</p>
+              <div className="grid grid-cols-4 gap-1">
+                {[50, 100, 200, 500].map((bps) => (
+                  <button
+                    key={bps}
+                    onClick={() => { setSlippageBps(bps); setShowSlippage(false); setQuote(null); }}
+                    className={`py-1.5 rounded-md text-[11px] font-semibold transition-colors cursor-pointer ${
+                      slippageBps === bps
+                        ? "bg-[#606AF7]/20 text-[#606AF7]"
+                        : "bg-white/5 text-white/50 hover:bg-white/10"
+                    }`}
+                  >
+                    {(bps / 100).toFixed(1)}%
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4">

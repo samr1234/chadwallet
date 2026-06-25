@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useWallets, useFundWallet } from "@privy-io/react-auth/solana";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import AuthButton from "@/components/AuthButton";
@@ -115,8 +116,8 @@ export default function ProfilePage() {
   if (!authenticated) {
     return (
       <div className="h-screen flex flex-col bg-[#060510] items-center justify-center gap-6 px-6">
-        <a href="/" className="flex items-center gap-2 mb-2">
-          <div className="w-9 h-9 rounded-xl bg-[#606AF7] flex items-center justify-center text-sm font-black">C</div>
+        <a href="/" className="flex items-center gap-2.5 mb-2">
+          <Image src="/logo.png" alt="ChadWallet" width={48} height={48} className="rounded-xl" />
           <span className="text-xl font-black tracking-tight text-[#eaedff]">Chad<span className="text-[#606AF7]">Wallet</span></span>
         </a>
         <div className="text-center">
@@ -143,7 +144,7 @@ export default function ProfilePage() {
       {/* Header */}
       <header className="h-14 shrink-0 flex items-center px-4 gap-4 border-b border-white/[0.07]">
         <a href="/" className="flex items-center gap-2 shrink-0">
-          <div className="w-7 h-7 rounded-lg bg-[#606AF7] flex items-center justify-center text-xs font-black">C</div>
+          <Image src="/logo.png" alt="ChadWallet" width={40} height={40} className="rounded-lg" />
           <span className="font-bold text-sm hidden sm:block">ChadWallet</span>
         </a>
         <div className="ml-auto">

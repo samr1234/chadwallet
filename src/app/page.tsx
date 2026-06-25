@@ -12,7 +12,6 @@ const features = [
 
 export default function Home() {
   return (
-    /* fomo.family outer structure: relative isolate, full page */
     <div className="relative isolate flex flex-col min-h-svh bg-[#060510] overflow-x-hidden">
 
       {/* ── Space background — absolute, full width, at top (NOT fixed) ── */}
@@ -30,7 +29,8 @@ export default function Home() {
       {/* ── Header ──────────────────────────────────────────────────────── */}
       {/* Desktop */}
       <header className="items-center h-13 pt-3 px-5 justify-between hidden md:flex">
-        <Link href="/" className="flex items-center text-[#eaedff]">
+        <Link href="/" className="flex items-center gap-2.5 text-[#eaedff]">
+          <Image src="/logo.png" alt="ChadWallet" width={48} height={48} className="rounded-xl" />
           <span className="text-[22px] font-black tracking-tight">
             Chad<span className="text-[#606AF7]">Wallet</span>
           </span>
@@ -64,7 +64,8 @@ export default function Home() {
 
       {/* Mobile header */}
       <header className="flex md:hidden items-center h-13 pt-3 px-5 justify-between">
-        <Link href="/" className="text-[#eaedff]">
+        <Link href="/" className="flex items-center gap-2 text-[#eaedff]">
+          <Image src="/logo.png" alt="ChadWallet" width={40} height={40} className="rounded-lg" />
           <span className="text-lg font-black tracking-tight">
             Chad<span className="text-[#606AF7]">Wallet</span>
           </span>
@@ -87,7 +88,6 @@ export default function Home() {
         {/* Hero text block */}
         <div className="flex flex-col items-center gap-5">
           <div className="flex flex-col gap-2 items-center text-center pt-10 px-6 md:pt-20">
-            {/* Brand — matches fomo's big logo treatment */}
             <h1 className="text-[72px] md:text-[120px] font-black tracking-tighter text-[#eaedff] leading-none select-none">
               Chad<span className="text-[#606AF7]">Wallet</span>
             </h1>
@@ -210,7 +210,8 @@ export default function Home() {
         <footer className="px-10 pt-8 pb-12 flex flex-col md:flex-row gap-10 items-start justify-between w-full border-t border-white/5">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
-              <Link href="/" className="flex items-center text-[#eaedff]">
+              <Link href="/" className="flex items-center gap-2.5 text-[#eaedff]">
+                <Image src="/logo.png" alt="ChadWallet" width={44} height={44} className="rounded-xl" />
                 <span className="text-[22px] font-black tracking-tight">
                   Chad<span className="text-[#606AF7]">Wallet</span>
                 </span>
