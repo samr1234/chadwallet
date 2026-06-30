@@ -197,8 +197,8 @@ export default function Home() {
         </div>
 
         {/* ── Feature cards ──────────────────────────────────────────── */}
-        <div className="pt-8 md:py-4 px-3 md:px-10 flex flex-col self-stretch min-[500px]:self-center gap-6 max-w-[1600px]">
-          <div className="flex flex-col gap-3">
+        <div className="pt-8 md:py-4 px-5 md:px-14 flex flex-col self-stretch min-[500px]:self-center gap-6 max-w-[1600px]">
+          <div className="flex flex-col gap-3 pl-2 md:pl-4">
             <h2 className="text-[32px] md:text-[60px] tracking-tighter leading-tight">never miss out again</h2>
             <p className="text-[rgba(209,216,255,0.6)] text-[18px] md:text-[28px] tracking-tight">the only Solana-first trading app</p>
           </div>
