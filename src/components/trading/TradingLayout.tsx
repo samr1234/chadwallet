@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { usePrivy } from "@privy-io/react-auth";
 import AuthButton from "@/components/AuthButton";
@@ -15,12 +15,21 @@ interface TokenOverview {
   symbol: string;
   name: string;
   price: number;
+  priceChange5mPercent?: number;
+  priceChange1hPercent?: number;
+  priceChange4hPercent?: number;
   priceChange24hPercent?: number;
-  mc?: number;
+  marketCap?: number;
   v24hUSD?: number;
   logoURI?: string;
-  supply?: number;
+  totalSupply?: number;
   decimals?: number;
+  buy24h?: number;
+  sell24h?: number;
+  vBuy24hUSD?: number;
+  vSell24hUSD?: number;
+  uniqueWallet24h?: number;
+  extensions?: { description?: string; website?: string; twitter?: string };
 }
 
 type ActiveTab = "trades" | "holders";
@@ -55,11 +64,13 @@ function HeaderSkeleton() {
 }
 
 export default function TradingLayout({ address }: { address: string }) {
-  const { ready, authenticated, user, login } = usePrivy();
+  const { authenticated, user } = usePrivy();
   const [tokenData, setTokenData] = useState<TokenOverview | null>(null);
   const [activeTab, setActiveTab] = useState<ActiveTab>("trades");
   const [mobileTab, setMobileTab] = useState<MobileTab>("chart");
   const [loading, setLoading] = useState(true);
+  const [chartHeight, setChartHeight] = useState(340);
+  const dragRef = useRef<{ startY: number; startH: number } | null>(null);
 
   useEffect(() => {
     if (!authenticated || !user) return;
@@ -89,34 +100,11 @@ export default function TradingLayout({ address }: { address: string }) {
         .finally(() => setLoading(false));
 
     load();
-    const id = setInterval(load, 30_000);
+    const id = setInterval(load, 15_000);
     return () => clearInterval(id);
   }, [address]);
 
   const change = tokenData?.priceChange24hPercent ?? 0;
-
-  // Auth gate
-  if (!ready || !authenticated) {
-    return (
-      <div className="h-screen flex flex-col bg-[#060510] items-center justify-center gap-6 px-6">
-        <a href="/" className="flex items-center gap-2.5 mb-2">
-          <Image src="/logo.png" alt="ChadWallet" width={48} height={48} className="rounded-xl" />
-          <span className="text-xl font-black tracking-tight text-[#eaedff]">Chad<span className="text-[#606AF7]">Wallet</span></span>
-        </a>
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-[#eaedff] mb-2">Sign in to start trading</h1>
-          <p className="text-sm text-white/40">Connect your wallet to trade Solana tokens.</p>
-        </div>
-        {ready ? (
-          <button onClick={login} className="cursor-pointer bg-[#606AF7] hover:bg-[#7c85ff] transition-colors rounded-xl px-10 py-3 font-bold text-sm">
-            Sign In
-          </button>
-        ) : (
-          <div className="w-32 h-10 rounded-xl bg-white/5 animate-pulse" />
-        )}
-      </div>
-    );
-  }
 
   // Shared token header strip
   const tokenHeader = (
@@ -144,10 +132,48 @@ export default function TradingLayout({ address }: { address: string }) {
               </span>
             </div>
           </div>
+          {/* Link icons */}
+          <div className="flex items-center gap-0.5 ml-2">
+            <a
+              href={`https://solscan.io/token/${tokenData.address}`}
+              target="_blank" rel="noopener noreferrer"
+              title="View on Solscan"
+              className="w-7 h-7 flex items-center justify-center rounded-lg text-white/35 hover:text-white hover:bg-white/8 transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+            {tokenData.extensions?.website && (
+              <a
+                href={tokenData.extensions.website}
+                target="_blank" rel="noopener noreferrer"
+                title="Website"
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-white/35 hover:text-white hover:bg-white/8 transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253" />
+                </svg>
+              </a>
+            )}
+            {tokenData.extensions?.twitter && (
+              <a
+                href={tokenData.extensions.twitter}
+                target="_blank" rel="noopener noreferrer"
+                title="Twitter / X"
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-white/35 hover:text-white hover:bg-white/8 transition-all"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+                </svg>
+              </a>
+            )}
+          </div>
+
           <div className="hidden lg:flex items-center gap-6 ml-4 text-xs">
             <div>
               <p className="text-white/40 mb-0.5">Market Cap</p>
-              <p className="font-semibold">{formatLargeNumber(tokenData.mc ?? 0)}</p>
+              <p className="font-semibold">{formatLargeNumber(tokenData.marketCap ?? 0)}</p>
             </div>
             <div>
               <p className="text-white/40 mb-0.5">24h Volume</p>
@@ -161,11 +187,31 @@ export default function TradingLayout({ address }: { address: string }) {
     </div>
   );
 
+  function onDragStart(e: React.PointerEvent<HTMLDivElement>) {
+    dragRef.current = { startY: e.clientY, startH: chartHeight };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+  function onDragMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!dragRef.current) return;
+    const delta = e.clientY - dragRef.current.startY;
+    setChartHeight(Math.min(600, Math.max(160, dragRef.current.startH + delta)));
+  }
+  function onDragEnd() { dragRef.current = null; }
+
   // Shared chart + trades/holders panel
   const chartPanel = (
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="shrink-0">
-        <PriceChart address={address} />
+        <PriceChart address={address} supply={tokenData?.totalSupply} height={chartHeight} />
+      </div>
+      {/* Drag handle */}
+      <div
+        onPointerDown={onDragStart}
+        onPointerMove={onDragMove}
+        onPointerUp={onDragEnd}
+        className="shrink-0 h-2.5 cursor-ns-resize flex items-center justify-center group border-t border-white/[0.07] hover:bg-white/[0.03] transition-colors"
+      >
+        <div className="w-8 h-0.5 rounded-full bg-white/15 group-hover:bg-[#606AF7]/60 transition-colors" />
       </div>
       <div className="flex-1 flex flex-col overflow-hidden border-t border-white/[0.07]">
         <div className="shrink-0 flex border-b border-white/[0.07]">
@@ -177,13 +223,15 @@ export default function TradingLayout({ address }: { address: string }) {
                 activeTab === tab ? "text-[#eaedff]" : "text-white/40 hover:text-white/70"
               }`}
             >
-              {tab === "trades" ? "Live Trades" : "Holders"}
+              {tab === "trades" ? "Swaps" : "Holders"}
               {activeTab === tab && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#606AF7]" />}
             </button>
           ))}
         </div>
         <div className="flex-1 overflow-y-auto">
-          {activeTab === "trades" ? <LiveTrades address={address} /> : <TokenHolders address={address} />}
+          {activeTab === "trades"
+            ? <LiveTrades address={address} tokenMc={tokenData?.marketCap} />
+            : <TokenHolders address={address} tokenPrice={tokenData?.price} />}
         </div>
       </div>
     </div>
@@ -218,6 +266,7 @@ export default function TradingLayout({ address }: { address: string }) {
             tokenAddress={address}
             tokenSymbol={tokenData?.symbol ?? "…"}
             tokenDecimals={tokenData?.decimals ?? 6}
+            tokenStats={tokenData ?? undefined}
           />
         </aside>
       </main>
@@ -243,6 +292,7 @@ export default function TradingLayout({ address }: { address: string }) {
                 tokenAddress={address}
                 tokenSymbol={tokenData?.symbol ?? "…"}
                 tokenDecimals={tokenData?.decimals ?? 6}
+                tokenStats={tokenData ?? undefined}
               />
             </div>
           )}

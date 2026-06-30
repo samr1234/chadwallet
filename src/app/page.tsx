@@ -42,7 +42,7 @@ export default function Home() {
             aria-label="Download on the App Store"
             className="flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-md hover:ring-white/40 hover:ring-1 hover:opacity-90 px-4 h-10 text-sm font-semibold border border-white/10"
           >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current shrink-0" aria-hidden="true">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current shrink-0" aria-hidden="true">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
             </svg>
             App Store
@@ -53,9 +53,7 @@ export default function Home() {
             aria-label="Get it on Google Play"
             className="flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-md hover:ring-white/40 hover:ring-1 hover:opacity-90 px-4 h-10 text-sm font-semibold border border-white/10"
           >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current shrink-0" aria-hidden="true">
-              <path d="M3.18 23.76c.3.16.64.19.96.09L14.72 12 3.14.15a1.07 1.07 0 0 0-.96.09C1.82.56 1.5 1.01 1.5 1.62v20.76c0 .61.32 1.06.82 1.38zm5.94-13.4 2.17-2.17 7.51 4.34-2.17 2.17-7.51-4.34zm0 5.28 7.51-4.34 2.17 2.17-7.51 4.34-2.17-2.17zM4.14 2.44l8.59 4.96-2.17 2.17L4.14 2.44zm0 19.12 6.42-7.13 2.17 2.17-8.59 4.96z" />
-            </svg>
+            <GooglePlayIcon className="w-5 h-5 shrink-0" />
             Google Play
           </Link>
           <AuthButton size="md" />
@@ -113,7 +111,9 @@ export default function Home() {
               className="cursor-pointer z-2 group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors duration-150 border border-white/10 rounded-xl text-base font-bold w-44 md:w-48 flex items-center justify-center overflow-hidden"
             >
               <div className="flex items-center overflow-hidden w-0 opacity-0 group-hover:w-6 group-hover:opacity-100 transition-all duration-150 ease-out">
-                <span className="mr-2 text-sm">↓</span>
+                <svg className="w-4 h-4 mr-1.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
               </div>
               <span>Download app</span>
             </Link>
@@ -141,60 +141,63 @@ export default function Home() {
         />
 
         {/* ── "Trade from anywhere" — desktop ────────────────────────── */}
-        <div className="hidden md:flex flex-col items-center py-10 px-8 gap-3">
-          <div className="font-mono font-bold text-[#606AF7] text-sm tracking-widest">
-            NOW AVAILABLE ON WEB
+        <div className="hidden md:flex flex-col items-center py-4 px-8 gap-10 w-full max-w-6xl mx-auto">
+          <div className="flex flex-col items-center gap-4">
+            <div className="font-mono font-bold text-[#606AF7] text-sm tracking-widest">NOW AVAILABLE ON WEB</div>
+            <h2 className="text-[56px] leading-tight tracking-tight text-center">
+              trade from anywhere.<br />never lose a beat.
+            </h2>
+            <p className="text-[rgba(209,216,255,0.6)] text-[20px] tracking-tight text-center max-w-xl">
+              Open a trade on your phone, close it on your desktop — all in one app.
+            </p>
           </div>
-          <h2 className="text-[56px] leading-14 tracking-tight text-center">
-            trade from anywhere.<br />never lose a beat.
-          </h2>
-          <p className="text-[rgba(209,216,255,0.6)] text-[20px] tracking-tight text-center">
-            Open a trade on your phone, close it on your desktop — all in one app.
-          </p>
-          <div className="flex items-end gap-8 mt-4">
+          {/* Monitor + phone composite */}
+          {/* Outer container is relative so phone can overlap monitor edge */}
+          <div className="relative w-[82%]">
             <Image
-              src="/images/feat-portfolio.png"
-              alt="ChadWallet portfolio"
-              width={300}
-              height={600}
-              loading="lazy"
-              className="w-[16vw] object-contain rounded-2xl animate-float"
-              style={{ animationDelay: "0s" }}
+              src="/images/desk.png?v=2"
+              alt="ChadWallet desktop app"
+              width={504}
+              height={495}
+              priority
+              unoptimized
+              className="w-full h-auto"
             />
             <Image
-              src="/images/feat-chart.png"
-              alt="ChadWallet chart"
-              width={300}
-              height={600}
-              loading="lazy"
-              className="w-[16vw] object-contain rounded-2xl animate-float"
-              style={{ animationDelay: "0.8s" }}
+              src="/images/mobile.png"
+              alt="ChadWallet mobile app"
+              width={380}
+              height={700}
+              priority
+              unoptimized
+              className="absolute right-[-14%] bottom-[14%] w-[28%] h-auto animate-float"
             />
           </div>
         </div>
 
         {/* ── "Trade from anywhere" — mobile ─────────────────────────── */}
-        <div className="flex md:hidden relative text-center">
-          <Image
-            src="/images/feat-chart.png"
-            alt="ChadWallet mobile app"
-            width={600}
-            height={900}
-            loading="lazy"
-            className="w-full"
-          />
-          <div className="absolute bottom-0 px-8 flex flex-col gap-3">
-            <h2 className="text-[32px] leading-9 tracking-tighter text-center">
+        <div className="flex md:hidden flex-col items-center gap-6 px-6 py-10 text-center">
+          <div className="flex flex-col items-center gap-2">
+            <div className="font-mono font-bold text-[#606AF7] text-xs tracking-widest">NOW AVAILABLE ON WEB</div>
+            <h2 className="text-[36px] leading-tight tracking-tighter">
               trade from anywhere.<br />never lose a beat.
             </h2>
-            <p className="tracking-tight text-[rgba(209,216,255,0.6)] leading-5">
-              Pick up a trade on your phone, close it on your desktop — all in one app.
+            <p className="text-[rgba(209,216,255,0.6)] text-[15px] tracking-tight">
+              Pick up a trade on your phone, close it on your desktop.
             </p>
           </div>
+          <Image
+            src="/images/mobile.png"
+            alt="ChadWallet mobile app"
+            width={380}
+            height={700}
+            unoptimized
+            className="w-[65vw] max-w-[260px] h-auto object-contain animate-float"
+          />
         </div>
 
         {/* ── Feature cards ──────────────────────────────────────────── */}
-        <div className="pt-8 md:py-4 px-3 md:px-20 flex flex-col self-stretch min-[500px]:self-center gap-6 max-w-350">
+        <div className="pt-8 md:py-4 px-3 md:px-10 flex flex-col self-stretch min-[500px]:self-center gap-6 max-w-[1600px]">
           <div className="flex flex-col gap-3">
             <h2 className="text-[32px] md:text-[60px] tracking-tighter leading-tight">never miss out again</h2>
             <p className="text-[rgba(209,216,255,0.6)] text-[18px] md:text-[28px] tracking-tight">the only Solana-first trading app</p>
@@ -357,7 +360,9 @@ function SocialProof() {
             target="_blank" rel="noopener noreferrer"
             className="cursor-pointer hidden md:flex group bg-white/12 hover:bg-white/20 backdrop-blur-md transition-colors border border-white/10 rounded-xl text-base font-bold w-48 items-center justify-center gap-1 overflow-hidden"
           >
-            <span className="w-0 overflow-hidden opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-150">↓</span>
+            <svg className="w-0 h-4 overflow-hidden opacity-0 group-hover:w-5 group-hover:opacity-100 transition-all duration-150 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
             <span>Download app</span>
           </Link>
         </div>
@@ -366,19 +371,30 @@ function SocialProof() {
   );
 }
 
+function GooglePlayIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path fill="#FBBC05" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594z" />
+      <path fill="#34A853" d="M1.337.924a1.487 1.487 0 0 0-.227.796v20.558c0 .295.084.571.227.796l14.432-11.08L1.337.924z" />
+      <path fill="#4285F4" d="M8.882 8.445L1.337.924 21.338 12.43a1.49 1.49 0 0 0 .68-.594L8.882 8.445z" />
+      <path fill="#EA4335" d="M8.882 15.555l-7.545 7.519 20.001-7.519a1.49 1.49 0 0 0-.68-.594L8.882 15.555z" />
+    </svg>
+  );
+}
+
 function FeatureCard({ tag, title, img }: { tag: string; title: string; img: string }) {
   return (
-    <div className="flex-1 min-w-0 shrink pt-8 pb-0 rounded-[25px] flex flex-col overflow-hidden gap-5 border border-white/[0.07] hover:border-white/[0.14] transition-colors duration-300 bg-[#0e0c1e] aspect-square">
-      <div className="font-mono text-[#606AF7] px-8 font-bold text-xs tracking-widest">{tag}</div>
-      <h3 className="text-[24px] md:text-[32px] leading-8 tracking-tight px-8">{title}</h3>
-      <div className="min-h-0 flex-1 flex justify-center items-end px-8">
+    <div className="group flex-1 min-w-0 shrink pt-8 pb-0 rounded-[25px] flex flex-col overflow-hidden gap-5 border border-white/[0.07] hover:border-white/[0.14] transition-colors duration-300 bg-[#0e0c1e] aspect-square">
+      <div className="font-mono text-[#606AF7] px-6 font-bold text-xs tracking-widest">{tag}</div>
+      <h3 className="text-[24px] md:text-[32px] leading-8 tracking-tight px-6">{title}</h3>
+      <div className="min-h-0 flex-1 flex justify-center items-end px-4">
         <Image
           src={img}
           alt={title}
           width={600}
           height={600}
           loading="lazy"
-          className="w-[80%] h-full object-contain object-bottom"
+          className="w-[95%] h-full object-contain object-bottom transition-transform duration-500 ease-out group-hover:scale-[1.12]"
         />
       </div>
     </div>
