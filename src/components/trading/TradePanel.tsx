@@ -381,7 +381,29 @@ export default function TradePanel({
         </div>
       </div>
 
+      {/* Auth gate — unauthenticated users see a clean sign-in prompt */}
+      {!authenticated && (
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-[#606AF7]/15 flex items-center justify-center">
+            <svg className="w-6 h-6 text-[#606AF7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-bold text-[#eaedff] mb-1">Sign in to trade</p>
+            <p className="text-xs text-white/35">Connect your wallet to buy and sell {tokenSymbol}</p>
+          </div>
+          <button
+            onClick={login}
+            className="w-full py-3 rounded-xl bg-[#606AF7] hover:bg-[#7c85ff] text-sm font-bold transition-colors cursor-pointer"
+          >
+            Sign In
+          </button>
+        </div>
+      )}
+
       {/* Buy / Sell toggle — always visible at top */}
+      {authenticated && <>
       <div className="shrink-0 px-4 pt-4 pb-0">
         <div className="flex rounded-lg overflow-hidden border border-white/[0.07] p-0.5 bg-[#0e0c1e]">
           {(["buy", "sell"] as Side[]).map((s) => (
@@ -799,6 +821,7 @@ export default function TradePanel({
         )}
 
       </div>
+      </>}
     </div>
   );
 }
